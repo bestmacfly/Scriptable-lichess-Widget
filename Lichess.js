@@ -3,7 +3,7 @@
 // icon-color: deep-green; icon-glyph: magic;
 var username=args.widgetParameter;
 if(!username){
-  username="bestmacfly";
+  username="your lichess name here!";
 }
 console.log(username)
 let icons={
