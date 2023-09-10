@@ -20,8 +20,8 @@ Note: The widget only supports medium size.
 
 1. At first, install [Scriptable](https://apps.apple.com/de/app/scriptable/id1405459188)
 2. Click the "+"-Icon in the Scriptable-app.
-3. Copy all the text from the Lichess.js-file. Click [here](https://github.com/bestmacfly/Scriptables-lichess-Widget/blob/main/lichess.js)  to get to the file.
-4. Add a Scriptable-widget to your homescreen.
+3. Copy all the text from the Lichess.js-file. Click [here](https://github.com/bestmacfly/Scriptables-lichess-Widget/blob/main/Lichess.js)  to get to the file.
+5. Add a Scriptable-widget to your homescreen.
    * Add it with size "medium".
    * Make sure to choose "Open app" for "When Interacting".
    * As parameter enter your lichess username
