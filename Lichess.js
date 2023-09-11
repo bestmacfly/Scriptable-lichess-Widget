@@ -79,9 +79,8 @@ function addHeaderStack(headerStack, username){
 function addFooterStack(footerStack){
   footerStack.addSpacer()
   let date=new Date()
-  let time= date.getHours()+":"+date.getMinutes()
-  var text=footerStack.addText("Last updated: "+time )
-  text.textColor=detailColor;
+  let time= date.getHours()+":"+(date.getMinutes()<10?'0':'') + date.getMinutes()
+  var text=footerStack.addText("Last updated: "+time )  text.textColor=detailColor;
   text.font=Font.boldSystemFont(footerFontSize)
   footerStack.setPadding(10,0,0,0)
 }
