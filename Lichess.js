@@ -2,10 +2,19 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-green; icon-glyph: magic;
 var username=args.widgetParameter;
-if(!username){
-  username="your lichess name here!";
+var gameTypes={
+  Bullet:false,
+  Blitz:true,
+  Rapid:true,
+  Classical:true,
+  Correspondence:true,
+  Puzzles:true
 }
-console.log(username)
+
+if(!username){
+  username="your lichess username here";
+}
+
 let icons={
   "Puzzles":"🧩",
   "Blitz":"🔥",
@@ -38,38 +47,43 @@ let data=new Array()
 var request = new Request(url)
 var json=await request.loadJSON()
 json.forEach((element)=>{
-  if(element.points.length>0)
+  if(gameTypes[element.name] && element.points.length>0)
   {  
-    console.log(element.name)
     var points=element.points.map((entry)=>{
       var history=convertArrayToDate(entry)
      return history
     })
-  data.push({name:element.name,points:points[points.length-1][1], change:getChange(points)})    
+    data.push({
+      name:element.name,points:points[points.length-1][1], 
+      change:getChange(points)
+    })    
   }
 })   
 
-let parentStack=widget.addStack();
-parentStack.layoutVertically()
-
-let headerStack=parentStack.addStack()
-addHeaderStack(headerStack, username)
-
-let statStack=parentStack.addStack()
-statStack.layoutHorizontally()
-addStatStack(statStack,data)
-
-let footerStack=parentStack.addStack()
-footerStack.layoutHorizontally()
-addFooterStack(footerStack)
+let stack=widget.addStack();
+generateMediumWidget(stack);
 
 Script.setWidget(widget);
 widget.presentMedium();
 Script.complete();
 
+function generateMediumWidget(parentStack){
+  parentStack.layoutVertically()
+
+  let headerStack=parentStack.addStack()
+  addHeaderStack(headerStack, username)
+  
+  let statStack=parentStack.addStack()
+  addStatStack(statStack,data)
+  
+  let footerStack=parentStack.addStack()
+  footerStack.layoutHorizontally()
+  addFooterStack(footerStack)
+}
+
 function addHeaderStack(headerStack, username){
   headerStack.addSpacer()
-  var text=headerStack.addText("Lichess statistics for "+username)
+  var text=headerStack.addText("lichess statistics for "+username)
   text.textColor=detailColor;
   text.font=Font.boldSystemFont(headerFontSize)
   headerStack.addSpacer()
@@ -79,13 +93,19 @@ function addHeaderStack(headerStack, username){
 function addFooterStack(footerStack){
   footerStack.addSpacer()
   let date=new Date()
-  let time= date.getHours()+":"+(date.getMinutes()<10?'0':'') + date.getMinutes()
-  var text=footerStack.addText("Last updated: "+time )  text.textColor=detailColor;
+  var minutes=date.getMinutes()
+  if(minutes<10){
+    minutes = "0"+minutes;
+  }
+  let time= date.getHours()+":"+minutes
+  var text=footerStack.addText("Last updated: "+time )
+  text.textColor=detailColor;
   text.font=Font.boldSystemFont(footerFontSize)
   footerStack.setPadding(10,0,0,0)
 }
 
 function addStatStack(mainStack,data){
+  mainStack.addSpacer()
   data.forEach(element=>{
   if(icons[element.name]){
     let stack=mainStack.addStack()
@@ -112,7 +132,7 @@ function addStatStack(mainStack,data){
     }else if(element.change<0){
       text.textColor=Color.red();
     }
-    mainStack.addSpacer(10)
+    mainStack.addSpacer()
   }
 });
 
